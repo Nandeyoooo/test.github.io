@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>SamSen Heritage Haven</title>
+    <link href="css/bootstrap.css" rel='stylesheet' type='text/css' />
+    <!-- jQuery (Bootstrap's JavaScript plugins) -->
+    <script src="js/jquery.min.js"></script>
+    <!-- Custom Theme files -->
+    <link href="css/form.css" rel="stylesheet" type="text/css" media="all" />
+    <link href="css/style.css" rel="stylesheet" type="text/css" media="all" />
+    <!-- Custom Theme files -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
+    <!--webfont-->
+    <link href='http://fonts.googleapis.com/css?family=Roboto:500,900,100,300,700,400' rel='stylesheet' type='text/css'>
+    <!--webfont-->
+    <!-- dropdown -->
+    <script src="js/jquery.easydropdown.js"></script>
+    <link href="css/nav.css" rel="stylesheet" type="text/css" media="all"/>
+    <script src="js/scripts.js" type="text/javascript"></script>
+    <!--js-->
+    <!--banner-->
+    <script src="js/responsiveslides.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
+    <script>  
+        $(function () {
+          $("#slider").responsiveSlides({
+            auto: false,
+            nav: true,
+            speed: 500,
+            namespace: "callbacks",
+            pager: true,
+          });
+        });
+
+        function generatePDF() {
+            console.log("Generating PDF...");
+            const invoice = document.getElementById('invoice');
+            console.log("Invoice Element:", invoice);
+            const filename = 'SamSen Heritage Haven.pdf';
+            html2pdf().from(invoice).save(filename);
+        }
+        function redirectToClothes() {
+            // Redirect to clothes.html
+            window.location.href = "index.html";
+        }
+
+        // Retrieve the final total from local storage and display it
+        $(document).ready(function() {
+            var finalTotal = localStorage.getItem('finalTotal');
+            var totalElement = document.createElement('p');
+            totalElement.innerHTML = "<strong>Total: RM " + finalTotal + "</strong>";
+
+            // Find the payment status element
+            var paymentStatusElement = document.querySelector('.payment-status');
+
+            // Insert the total element before the payment status element
+            paymentStatusElement.parentNode.insertBefore(totalElement, paymentStatusElement);
+        });
+    </script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            border-radius: 5px;
+            background-color: ;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .invoice-details {
+            margin-bottom: 30px;
+        }
+        .invoice-details p {
+            margin: 5px 0;
+            margin-left:20px;
+        }
+        .item {
+            border-top: 1px solid #ccc;
+            padding: 10px 0;
+        }
+        .item:last-child {
+            border-bottom: 1px solid #ccc;
+        }
+        .item p {
+            margin: 5px 0;
+            margin-left:20px;
+        }
+        .footers {
+            text-align: center;
+            margin-top: 30px;
+        }
+    </style>
+</head>
+<body>
+    <div class="banner-bg banner-sec">  
+        <div class="container">
+            <div class="header">
+                <div class="logo">
+                    <a href="index.html"><img src="images/logo.png" alt=""/></a>
+                </div>                             
+            </div>
+            <div class="clearfix"></div>
+        </div>
+    </div>                  
+    <!--/Content here-->
+    <div class="container">
+        <div id="invoice"><h1>Invoice</h1>
+        <div class="invoice-details" id="invoice">
+            <!-- Placeholder for billing address -->
+            <br>
+            <p><strong>Your Billing Address:</strong></p>
+            <p>Full Name: [Replace with first name]</p>
+            <p>Email: [Replace with email]</p>
+            <p>Address: [Replace with address]</p>
+            <p>City: [Replace with city]</p>
+            <p>State: [Replace with state]</p>
+            <p>Zip: [Replace with zip]</p>
+            <br>
+            <!-- Placeholder for cart items -->
+            <div class='item'>
+                <p><strong>Your Items:</strong></p>
+                <!-- Replace with actual cart items -->
+                <p>Product Name: [Replace with product name]</p>
+                <p>Price: RM [Replace with price]</p>
+            </div>
+            <!-- Placeholder for payment status -->
+            <p class='payment-status'><strong>Payment Status:</strong> Paid</p>
+            <p> Price is according to quantity.</p>
+            <!-- Thank you message -->
+            <div class="footers">
+                <p>Thank you for shopping with us!</p>
+            </div>
+        </div>
+        </div>
+        <!-- Buttons for PDF generation and redirection -->
+        <div class="footers">
+            <button onclick="generatePDF()" class="btn btn-primary">Download Invoice</button>
+            <button onclick="redirectToClothes()" class="btn btn-secondary">Back to Shop</button>
+        </div>
+    </div>
+    <!-- Footer section -->
+    <div class="footer">
+        <div class="container wrap">
+            <div class="logo2">
+                <a><img src="images/logo2.png" alt=""/></a>
+            </div>
+            <div class="ftr-menu">
+                <ul>
+                    <li><img src="images/Insta.png"/></li>
+                    <li><img src="images/Tiktok.png"/></li>
+                    <li><img src="images/Whatsapp.png"/></li>
+                    <li><img src="images/Facebook.png"/></li>
+                </ul>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+    </div>
+</body>
+</html>

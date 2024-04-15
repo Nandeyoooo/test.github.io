@@ -1,0 +1,818 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>SamSen Heritage Haven</title>
+<link href="css/bootstrap.css" rel='stylesheet' type='text/css' />
+<!-- jQuery (Bootstrap's JavaScript plugins) -->
+<script src="js/jquery.min.js"></script>
+<!-- Custom Theme files -->
+<link href="css/style.css" rel="stylesheet" type="text/css" media="all" />
+<!-- Custom Theme files -->
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
+<!--webfont-->
+<link href='http://fonts.googleapis.com/css?family=Roboto:500,900,100,300,700,400' rel='stylesheet' type='text/css'>
+<!--webfont-->
+<!-- dropdown -->
+<script src="js/jquery.easydropdown.js"></script>
+<link href="css/nav.css" rel="stylesheet" type="text/css" media="all"/>
+<script src="js/scripts.js" type="text/javascript"></script>
+<!--js-->
+
+</head>
+<body>
+<!--banner-->
+<script src="js/responsiveslides.min.js"></script>
+<script>
+    $(function () {
+    $("#slider").responsiveSlides({
+    auto: false,
+    nav: true,
+    speed: 500,
+    namespace: "callbacks",
+    pager: true,
+    });
+    });
+
+    // Function to initialize cart items from localStorage
+    function initCartItems() {
+    var storedCartItems = localStorage.getItem('cartItems');
+    if (storedCartItems !== null) {
+	cartItems = JSON.parse(storedCartItems);
+    updateCartIcon();
+    }
+    }
+
+    var cartItems = []; // Array to store cart items
+
+    // Function to add item to cart
+    function addToCart(productName, productPrice, productImage) {
+        // Push the item to the cartItems array
+        cartItems.push({ name: productName, price: parseFloat(productPrice), image: productImage });
+
+        // Store the updated cart items in localStorage
+        localStorage.setItem('cartItems', JSON.stringify(cartItems));
+
+        // Update the cart icon and dropdown
+        updateCartIcon();
+    }
+
+    // Function to remove item from cart
+    function removeFromCart(index) {
+
+    // Remove the item from the cartItems array at the specified index
+    cartItems.splice(index, 1);
+
+    // Store the updated cart items in localStorage
+	localStorage.setItem('cartItems', JSON.stringify(cartItems));
+
+    // Update the cart icon and dropdown
+    updateCartIcon();
+    }
+
+    // Function to update cart icon and dropdown
+	function updateCartIcon() {
+    var cartIcon = document.getElementById("cart-icon");
+    var cartCount = document.getElementById("cart-count");
+    var cartDropdown = document.getElementById("cart-dropdown");
+
+    // Update cart count
+    cartCount.innerText = cartItems.length;
+
+    // Update cart dropdown with items
+    var dropdownContent = "";
+    cartItems.forEach(function(item, index) {
+		dropdownContent += "<div>" + item.name + " - RM" + item.price.toFixed(2) +          
+                  "<span>&nbsp;&nbsp;</span><button onclick='removeFromCart(" + index + ")'>Remove</button></div>";
+    });
+    document.getElementById("cart-items").innerHTML = dropdownContent;
+
+    // Show or hide cart dropdown based on cartItems length
+    if (cartItems.length > 0) {
+    cartDropdown.classList.add("show");
+    } else {
+    cartDropdown.classList.remove("show");
+    }
+
+    // Calculate and display total price
+    calculateTotalPrice();
+}
+
+    // Function to toggle cart dropdown visibility
+    function toggleCartDropdown() {
+    var cartDropdown = document.getElementById("cart-dropdown");
+    cartDropdown.classList.toggle("show");
+    }
+
+    // Function to calculate total price and display it
+    function calculateTotalPrice() {
+    var total = 0;
+
+    // Iterate through cart items and sum up prices
+    cartItems.forEach(function (item) {
+    total += item.price;
+    });
+
+    // Display total price in the designated HTML element
+    var totalPriceElement = document.getElementById("total-price");
+    totalPriceElement.innerText = "Total: RM" + total.toFixed(2);
+    }
+
+	// Function for checkout
+function checkout() {
+    // Redirect to cart.html with cart data as URL parameters
+    var cartData = JSON.stringify(cartItems); // Convert cartItems array to JSON string
+    window.location.href = "cart.html?cartData=" + encodeURIComponent(cartData);
+}
+
+// Function to initialize cart items when the page loads
+function initCartItems() {
+    // Check if cart data is present in URL parameters
+    var urlParams = new URLSearchParams(window.location.search);
+    var cartDataParam = urlParams.get('cartData');
+    if (cartDataParam) {
+        // Parse cart data from URL parameters and save to local storage
+        var cartData = JSON.parse(decodeURIComponent(cartDataParam));
+        localStorage.setItem('cartItems', JSON.stringify(cartData));
+    }
+}
+
+// Function to clear cart data from local storage
+function clearCartData() {
+    localStorage.removeItem('cartItems');
+}
+
+// Call initCartItems when the page loads
+window.onload = initCartItems;
+
+
+ // Define your product data (you can replace this with your actual product data)
+ var allProducts = [
+		// Baju Iban
+        { name: "BAJU BURONG DESIGN 1", price: 700, image: "images/Iban 1.jpg" },
+        { name: "BAJU BURONG DESIGN 2", price: 800, image: "images/Iban 3.jpg" },
+        { name: "BAJU KALAMBI DESIGN 1", price: 950, image: "images/Kalambi 1.jpg" },
+        { name: "BAJU KALAMBI DESIGN 2", price: 1000, image: "images/Kalambi 2.jpg" },
+
+		// Baju Kenyah
+        { name: "BAJU MANIK DESIGN 1", price: 1000, image: "images/Kenyah 1.jpg" },
+        { name: "BAJU MANIK DESIGN 2", price: 2000, image: "images/Kenyah 2.jpg" },
+        { name: "BAJU MANIK DESIGN 3", price: 3000, image: "images/Kenyah 3.jpg" },
+        { name: "BAJU MANIK DESIGN 4", price: 2500, image: "images/Kenyah 4.jpg" },
+
+		// Baju Lunbawang
+        { name: "BAJU LUNDAYEH DESIGN 1", price: 900, image: "images/Luntau 1.jpg" },
+        { name: "BAJU KULIT KAYU DESIGN 1", price: 1000, image: "images/Luntau 2.jpg" },
+        { name: "BAJU LUNDAYEH DESIGN 2", price: 900, image: "images/Lunbawang 3.jpg" },
+        { name: "BAJU KULIT KAYU DESIGN 2", price: 950, image: "images/Lunbawang 4.jpg" },
+
+		// Photoframe arts
+		{ name: "Tarsier monkey painting", price: 150, image: "images/Arts 1.jpg" },
+        { name: "Parang shield painting", price: 70, image: "images/Arts 2.jpg" },
+        { name: "Rafflesia flower painting", price: 100, image: "images/Arts 3.jpg" },
+        { name: "Ngajat dancing painting", price: 150, image: "images/Arts 4.jpg" },
+
+		// Wood art
+		{ name: "Kelembit design 1", price: 300, image: "images/Arts 5.jpg" },
+        { name: "Kelembit design 2", price: 400, image: "images/Arts 6.jpg" },
+        { name: "Kelembit design 3", price: 400, image: "images/Arts 7.jpg" },
+        { name: "Wood art design 1", price: 350, image: "images/Arts 8.jpg" },
+
+		// Beads earing
+		{ name: "Anting manik design 1", price: 80, image: "images/Anting 1.jpeg" },
+        { name: "Anting manik design 2", price: 80, image: "images/Anting 2.jpeg" },
+        { name: "Anting manik design 3", price: 80, image: "images/Anting 3.jpeg" },
+        { name: "Anting manik design 4", price: 80, image: "images/Anting 4.jpeg" },
+
+		// Necklace earing
+		{ name: "Kalung manik design 1", price: 100, image: "images/Kalung 1.jpeg" },
+        { name: "Kalung manik design 2", price: 120, image: "images/Kalung 2.jpeg" },
+        { name: "Kalung manik design 3", price: 110, image: "images/Kalung 3.jpeg" },
+        { name: "Kalung manik design 4", price: 150, image: "images/Kalung 4.jpg" },
+		
+		// Traditional hats
+        { name: "Topi dayak design 1", price: 350, image: "images/Topi 1.jpeg" },
+        { name: "Topi lundayeh design 1", price: 300, image: "images/Topi 2.jpeg" },
+        { name: "Topi dayak design 2", price: 350, image: "images/Topi 3.jpeg" },
+        { name: "Topi lundayeh design 2", price: 400, image: "images/Topi 4.jpg" },
+
+    ];
+
+    /// Function to display products
+function displayProducts(products, sectionId) {
+    var productsContainer = document.getElementById("overlay-content");
+    var html = "<ul>";
+    products.forEach(function(product, index) {
+        // Increment index by 1 because IDs start from 1
+        var productId = index + 1;
+        html += `
+            <li class="product">
+                <img src="${product.image}" alt="${product.name}" style="width: 100px; height: auto;">
+                <span><a href="#${product.name.replace(/\s+/g, '-')}">${product.name}</a></span>
+            </li>
+        `;
+    });
+    html += "</ul>";
+    productsContainer.innerHTML = html;
+
+    // Show the overlay
+    document.getElementById("overlay").style.display = "block";
+}
+    // Function to search for products
+    function searchProducts() {
+        // Get the search query entered by the user
+        var searchQuery = document.getElementById("searchInput").value.toLowerCase();
+        
+        // Filter products based on the search query
+        var filteredProducts = allProducts.filter(function(product) {
+            return product.name.toLowerCase().includes(searchQuery);
+        });
+
+        // Display the filtered products
+        displayProducts(filteredProducts);
+    }
+	// Function to hide the overlay
+    window.onclick = function(event) {
+        if (event.target == document.getElementById("overlay")) {
+            document.getElementById("overlay").style.display = "none";
+        }
+    }
+	displayProducts(allProducts, "Arts");
+
+</script>
+
+<style>
+    /* CSS for the cart dropdown */
+    .cart-dropdown {
+        display: none;
+        background-color: white; /* Set background color to white */
+        position: absolute; /* Position absolutely */
+        top: 100%; /* Align with the bottom of the cart icon */
+        right: 0; /* Align to the right */
+        z-index: 1000; /* Set a high z-index to ensure it's above other content */
+        border: 1px solid rgb(0, 0, 0); /* Add border for visual separation */
+        padding: 10px; /* Add padding for better appearance */
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Add a subtle box shadow for depth */
+    }
+
+    /* Show the cart dropdown when the 'show' class is added */
+    .cart-dropdown.show {
+        display: block;
+    }
+
+    /* Style for close button */
+    .close-btn {
+        position: absolute;
+        top: 5px;
+        right: 5px;
+        background: none;
+        border: none;
+        font-size: 16px;
+        cursor: pointer;
+    }
+
+    /* Style for individual cart items in the dropdown */
+    .cart-dropdown div {
+        padding: 5px 0; /* Add padding to the top and bottom of each item */
+        border-bottom: 1px solid rgb(0, 0, 0); /* Add a bottom border for visual separation */
+    }
+
+    /* Style for the last cart item to remove the bottom border */
+    .cart-dropdown div:last-child {
+        border-bottom: none; /* Remove bottom border for the last item */
+    }
+
+    /* Style for the total price at the bottom of the cart */
+    #total-price {
+        text-align: right; /* Align text to the right */
+        padding-top: 10px; /* Add some spacing from the cart items */
+        font-weight: bold; /* Make the total price bold */
+    }
+	.search-input {
+    width: 200px; /* Adjust the width as needed */
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #000; /* Black border */
+    color: #000; /* Black text color */
+    background-color: #fff; /* White background */
+}
+</style>
+
+<div class="banner-bg banner-sec">
+    <div class="container">
+        <div class="header">
+            <div class="logo">
+                <a><img src="images/logo.png" alt=""/></a>
+            </div>
+            <div class="top-nav">
+                <label class="mobile_menu" for="mobile_menu"><span>Menu</span></label>
+                <input id="mobile_menu" type="checkbox">
+                
+                <ul class="nav">
+                    <li class="dropdown1">
+                        <a href="#">Search</a>
+                        <ul class="dropdown2">
+                            <li>
+                                <input type="text" id="searchInput" placeholder="Search products...">
+                                <button onclick="searchProducts()">Search</button>
+                                
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="dropdown1"><a href="#Clothes">CLOTHES</a></li>
+                    <li class="dropdown1"><a href="#Arts">ARTS</a></li>
+                    <li class="dropdown1"><a href="#HandCraft">HANDMADE CRAFTS</a></li>&nbsp;&nbsp;
+                    <a class="cart" href="#" onclick="toggleCartDropdown()">
+                        <img id="cart-icon" src="images/cart.png" alt=""/>
+                        <span style="color:white;" id="cart-count">0</span> <!-- This will be dynamically updated -->
+                        <div id="cart-dropdown" class="cart-dropdown"> <!-- This will display the cart items -->
+                            <button class="close-btn" onclick="toggleCartDropdown()"></button>
+                            <div style="color:rgb(0, 0, 0);" id="cart-items"></div> <!-- Cart items will be dynamically added here -->
+                            <div style="color:rgb(0, 0, 0);" id="total-price"></div> <!-- Total price will be displayed here -->
+                            <button onclick="checkout()" style="color:rgb(0, 0, 0); " class="checkout-btn">Checkout</button>
+                        </div>
+                    </a>
+                </ul>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+    </div>                   
+</div>
+<!-- Overlay for search results -->
+<div id="overlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5); z-index: 100;">
+    <!-- Content -->
+    <div id="overlay-content" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: white; padding: 20px; max-height: 80vh; overflow-y: auto;"></div>
+</div>
+
+<!--Clothes section-->
+<div class="bikes"id="BAJU-BURONG-DESIGN-1">      
+	<div class="mountain-sec">
+	<h2>IBAN TRIBE</h2>
+	<div class="bike">                
+		<img src="images/Iban 1.jpg" alt=""/>
+		<div class="bike-cost">
+			<div class="bike-mdl">
+				<h4>BAJU BURONG DESIGN 1<span>RM 700</span></h4>
+			</div>
+			<div class="bike-cart">                         
+				<a class="buy" href="#" onclick="addToCart('BAJU BURONG DESIGN 1', '700.00', 'images/Iban 1.jpg')">ADD TO CART</a>
+			</div>
+			<div class="clearfix"></div>
+		</div>
+		
+	</div>
+		</a>
+
+ 
+			<div class="bike"id="product2">                
+				<img src="images/Iban 3.jpg" id="BAJU-BURONG-DESIGN-2">
+				<div class="bike-cost">
+					<div class="bike-mdl">
+						<h4>BAJU BURONG DESIGN 2<span>RM 800</span></h4>
+					</div>
+					<div class="bike-cart">                         
+						<a class="buy" href="#" onclick="addToCart('BAJU BURONG DESIGN 2', '800.00', 'images/Iban 3.jpg')">ADD TO CART</a>
+					</div>
+					<div class="clearfix"></div>
+				</div>
+				
+			</div>
+		</a>
+
+			<div class="bike" id="product3">                
+				<img src="images/Kalambi 1.jpg" id="BAJU-KALAMBI-DESIGN-1">
+				<div class="bike-cost">
+					<div class="bike-mdl">
+						<h4>BAJU KALAMBI DESIGN 1<span>RM 950</span></h4>
+					</div>
+					<div class="bike-cart">                         
+						<a class="buy" href="#" onclick="addToCart('BAJU KALAMBI DESIGN 1', '950.00', 'images/Kalambi 1.jpg')">ADD TO CART</a>
+					</div>
+					<div class="clearfix"></div>
+				</div>
+				
+			</div>
+		</a>
+
+			<div class="bike"id="product4">                
+				<img src="images/Kalambi 2.jpg" id="BAJU-KALAMBI-DESIGN-2">
+				<div class="bike-cost">
+					<div class="bike-mdl">
+						<h4>BAJU KALAMBI DESIGN 2<span>RM 1000</span></h4>
+					</div>
+					<div class="bike-cart">                         
+						<a class="buy" href="#" onclick="addToCart('BAJU KALAMBI DESIGN 2', '1000.00', 'images/Kalambi 2.jpg')">ADD TO CART</a>
+					</div>
+					<div class="clearfix"></div>
+				</div>
+				
+			</div>
+		</a>
+
+
+		<div class="bikes">       
+		<div class="mountain-sec">
+		   <h2>KENYAH TRIBE</h2>
+		   <div class="bike">                
+			<img src="images/Kenyah 1.jpg" id="BAJU-MANIK-DESIGN-1">
+			<div class="bike-cost">
+				<div class="bike-mdl">
+					<h4>BAJU MANIK DESIGN 1<span>RM 1000</span></h4>
+				</div>
+				<div class="bike-cart">                         
+				<a class="buy" href="#" onclick="addToCart('BAJU MANIK DESIGN 1', '1000.00', 'images/Kenyah 1.jpg')">ADD TO CART</a>
+				</div>
+				<div class="clearfix"></div>
+			</div>
+			
+		</div>
+	</a>
+
+	<div class="bike">                
+		<img src="images/Kenyah 2.jpg" id="BAJU-MANIK-DESIGN-2">
+		<div class="bike-cost">
+			<div class="bike-mdl">
+				<h4>BAJU MANIK DESIGN 2<span>RM 2000</span></h4>
+			</div>
+			<div class="bike-cart">                         
+				<a class="buy" href="#" onclick="addToCart('BAJU MANIK DESIGN 2', '2000.00', 'images/Kenyah 2.jpg')">ADD TO CART</a>
+			</div>
+			<div class="clearfix"></div>
+		</div>
+		
+	</div>
+</a>
+
+<div class="bike">                
+	<img src="images/Kenyah 3.jpg" id="BAJU-MANIK-DESIGN-3">
+	<div class="bike-cost">
+		<div class="bike-mdl">
+			<h4>BAJU MANIK DESIGN 3<span>RM 3000</span></h4>
+		</div>
+		<div class="bike-cart">                         
+			<a class="buy" href="#" onclick="addToCart('BAJU MANIK DESIGN 3', '3000.00', 'images/Kenyah 3.jpg')">ADD TO CART</a>
+		</div>
+		<div class="clearfix"></div>
+	</div>
+	
+</div>
+</a>
+
+<div class="bike">                
+	<img src="images/Kenyah 4.jpg" id="BAJU-MANIK-DESIGN-4">
+	<div class="bike-cost">
+		<div class="bike-mdl">
+			<h4>BAJU MANIK DESIGN 4<span>RM 2500</span></h4>
+		</div>
+		<div class="bike-cart">                         
+			<a class="buy" href="#" onclick="addToCart('BAJU MANIK DESIGN 4', '2500.00', 'images/Kenyah 4.jpg')">ADD TO CART</a>
+		</div>
+		<div class="clearfix"></div>
+	</div>
+	
+</div>
+</a>
+		 
+		 <div class="road-sec">
+		   <h2>LUNBAWANG TRIBE</h2>
+		   <div class="bike">                
+			<img src="images/Luntau 1.jpg" id="BAJU-LUNDAYEH-DESIGN-1">
+			<div class="bike-cost">
+				<div class="bike-mdl">
+					<h4>BAJU LUNDAYEH DESIGN 1<span>RM 900</span></h4>
+				</div>
+				<div class="bike-cart">                         
+					<a class="buy" href="#" onclick="addToCart('BAJU LUNDAYEH DESIGN 1', '900.00', 'images/Luntau 1.jpg')">ADD TO CART</a>
+				</div>
+				<div class="clearfix"></div>
+			</div>
+			
+		</div>
+		</a>
+
+		<div class="bike">                
+			<img src="images/Luntau 2.jpg" id="BAJU-KULIT-KAYU-DESIGN-1">
+			<div class="bike-cost">
+				<div class="bike-mdl">
+					<h4>BAJU KULIT KAYU DESIGN 1<span>RM 1000</span></h4>
+				</div>
+				<div class="bike-cart">                         
+					<a class="buy" href="#" onclick="addToCart('BAJU KULIT KAYU DESIGN 1', '1000.00', 'images/Luntau 2.jpg')">ADD TO CART</a>
+				</div>
+				<div class="clearfix"></div>
+			</div>
+			
+		</div>
+		</a>
+
+		<div class="bike">                
+			<img src="images/Lunbawang 3.jpg" id="BAJU-LUNDAYEH-DESIGN-2">
+			<div class="bike-cost">
+				<div class="bike-mdl">
+					<h4>BAJU LUNDAYEH DESIGN 2<span>RM 900</span></h4>
+				</div>
+				<div class="bike-cart">                         
+					<a class="buy" href="#" onclick="addToCart('BAJU LUNDAYEH DESIGN 2', '900.00', 'images/Lunbawang 3.jpg')">ADD TO CART</a>
+				</div>
+				<div class="clearfix"></div>
+			</div>
+			
+		</div>
+		</a>
+
+		<div class="bike">                
+			<img src="images/Lunbawang 4.jpg" id="BAJU-KULIT-KAYU-DESIGN-2">
+			<div class="bike-cost">
+				<div class="bike-mdl">
+					<h4>BAJU KULIT KAYU DESIGN 2<span>RM 950</span></h4>
+				</div>
+				<div class="bike-cart">                         
+					<a class="buy" href="#" onclick="addToCart('BAJU KULIT KAYU DESIGN 2', '950.00', 'images/Lunbawang 4.jpg')">ADD TO CART</a>
+				</div>
+				<div class="clearfix"></div>
+			</div>
+			
+		</div>
+		
+	<div class="clearfix"></div>
+	</div>	
+	<div class="clearfix"></div>
+			</div>
+		 </div>
+	</div>
+</div>
+</div>
+</div>
+
+
+<!-- Arts Division -->
+<div id="Arts"></div>
+<div class="parts">
+	<div class="container">
+		<h2>ARTS</h2>
+		<div class="bike-parts-sec">
+			 <div class="bike-parts">
+				<div class="top">
+					<ul>
+						<li><a>Photoframe Arts</a></li>
+					</ul>				 
+				</div>
+				<div class="bike-apparels">
+					<div class="parts1">
+						<div class="part-sec">					 
+							<img src="images/Arts 1.jpg" id="Tarsier-monkey-painting">
+							<div class="part-info">
+								<a><h5>Tarsier monkey painting<span>RM 150</span></h5></a>
+								
+								<a class="qck" href="#" onclick="addToCart('Tarsier monkey painting', '150.00', 'images/Arts 1.jpg')">ADD TO CART</a>
+							</div>
+						</div></a>
+						<div class="part-sec">					 
+						   <img src="images/Arts 2.jpg" id="Parang-shield-painting">
+							<div class="part-info">
+							   <a><h5>Parang shield painting<span>RM 70</span></h5></a>
+							  
+							   <a class="qck" href="#" onclick="addToCart('Parang shield painting', '70.00', 'images/Arts 2.jpg')">ADD TO CART</a>
+							</div>
+						</div></a>
+						<div class="part-sec none1">					 
+						   <img src="images/Arts 3.jpg" id="Rafflesia-flower-painting">
+							<div class="part-info">
+							   <a><h5>Rafflesia flower painting<span>RM 100</span></h5></a>
+							   
+							   <a class="qck" href="#" onclick="addToCart('Rafflesia flower painting', '100.00', 'images/Arts 3.jpg')">ADD TO CART</a>
+							</div>
+						</div></a>
+						<div class="part-sec none1">					 
+						   <img src="images/Arts 4.jpg" id="Ngajat-dancing-painting">
+							<div class="part-info">
+							   <a><h5>Ngajat dancing painting<span>RM 150</span></h5></a>
+							   
+							   <a class="qck" href="#" onclick="addToCart('Ngajat dancing painting', '150.00', 'images/Arts 4.jpg')">ADD TO CART</a>
+							</div>
+						</div></a>
+						<div class="clearfix"></div>
+					</div><br>
+					<div class="top">
+					   <ul>
+						   <li><a>Wood Arts</a></li>
+					   </ul>				 
+				   </div>
+					<div class="parts2">
+						<div class="part-sec">					 
+						   <img src="images/Arts 5.jpg" id="Kelembit-design-1">
+							<div class="part-info">
+							   <a><h5>Kelembit design 1<span>RM 300</span></h5></a>
+							   
+							   <a class="qck" href="#" onclick="addToCart('Kelembit design 1', '300.00', 'images/Arts 5.jpg')">ADD TO CART</a>
+							</div>
+						</div></a>
+						<div class="part-sec">					 
+						   <img src="images/Arts 6.jpg" id="Kelembit-design-2">
+							<div class="part-info">
+							   <a><h5>Kelembit design 2<span>RM 400</span></h5></a>
+							   
+							   <a class="qck" href="#" onclick="addToCart('Kelembit design 2', '400.00', 'images/Arts 6.jpg')">ADD TO CART</a>
+							</div>
+						</div></a>
+
+						<div class="part-sec">					 
+							<img src="images/Arts 7.jpg" id="Kelembit-design-3">
+							 <div class="part-info">
+								<a><h5>Kelembit design 3<span>RM 400</span></h5></a>
+								
+								<a class="qck" href="#" onclick="addToCart('Kelembit design 3', '400.00', 'images/Arts 7.jpg')">ADD TO CART</a>
+							 </div>
+						 </div></a>
+
+
+						<div class="part-sec none1">					 
+						   <img src="images/Arts 8.jpg" id="Wood-art-design-1">
+							<div class="part-info">
+							   <a><h5>Wood art design 1<span>RM 350</span></h5></a>
+							   
+							   <a class="qck" href="#" onclick="addToCart('Wood art design 1', '350.00', 'images/Arts 8.jpg')">ADD TO CART</a>
+							</div>
+						</div></a>
+						<div class="clearfix"></div>
+	</div>	
+	<div class="clearfix"></div>
+	</div>
+	 </div>
+	</div>
+</div>
+</div>
+</div>
+			
+		   
+			
+
+
+<!--Handmade Craft-->
+<div id="HandCraft"></div>
+<div class="parts">
+	<div class="container">
+		<h2>HANDMADE CRAFTS</h2>
+		<div class="bike-parts-sec">
+		<div class="bike-parts acces">
+		   <div class="top">
+			   <ul>
+				   <li><a>Beads earing</a></li>
+			   </ul>				 
+		   </div>		 
+			</div>
+			<div class="bike-apparels">
+				<div class="parts1"></div>
+					<div class="part-sec">					 
+						<img src="images/Anting 1.jpeg" id="Anting-manik-design-1">
+						<div class="part-info">
+							<a><h5>Anting manik design 1<span>RM 80</span></h5></a>
+							
+							<a class="qck" href="#" onclick="addToCart('Anting manik design 1', '80.00', 'images/Anting 1.jpeg')">ADD TO CART</a>
+						</div>
+					</div></a>
+
+					<div class="part-sec">					 
+					   <img src="images/Anting 2.jpeg" id="Anting-manik-design-2">
+					   <div class="part-info">
+						   <a><h5>Anting manik design 2<span>RM 80</span></h5></a>
+						   
+							<a class="qck" href="#" onclick="addToCart('Anting manik design 2', '80.00', 'images/Anting 2.jpeg')">ADD TO CART</a>
+						</div>
+					</div></a>
+					<div class="part-sec none2">					 
+					   <img src="images/Anting 3.jpeg" id="Anting-manik-design-3">
+					   <div class="part-info">
+						   <a><h5>Anting manik design 3<span>RM 80</span></h5></a>
+						   
+							<a class="qck" href="#" onclick="addToCart('Anting manik design 3', '80.00', 'images/Anting 3.jpeg')">ADD TO CART</a>
+						</div>
+					</div></a>
+					<div class="part-sec none1">					 
+					   <img src="images/Anting 4.jpeg" id="Anting-manik-design-4">
+					   <div class="part-info">
+						   <a><h5>Anting manik design 4<span>RM 80</span></h5></a>
+						  
+							<a class="qck" href="#" onclick="addToCart('Anting manik design 4', '80.00', 'images/Anting 4.jpeg')">ADD TO CART</a>
+						</div>
+					</div></a>
+					<div class="clearfix"></div>
+				</div><br>
+				<div class="top">
+				   <ul>
+					   <li><a>Beads necklace</a></li>
+				   </ul>				 
+			   </div>
+				<div class="parts2">
+				<div class="part-sec">					 
+					   <img src="images/Kalung 1.jpeg" id="Kalung-manik-design-1">
+						<div class="part-info">
+							<a><h5>Kalung manik design 1<span>RM 100</span></h5></a>
+							
+							<a class="qck" href="#" onclick="addToCart('Kalung manik design 1', '100.00', 'images/Kalung 1.jpeg')">ADD TO CART</a>
+						</div>
+					</div></a>
+					<div class="part-sec">					 
+					   <img src="images/Kalung 2.jpeg" id="Kalung-manik-design-2">
+						<div class="part-info">
+							<a><h5>Kalung manik design 2<span>RM 120</span></h5></a>
+							
+							<a class="qck" href="#" onclick="addToCart('Kalung manik design 2', '120.00', 'images/Kalung 2.jpeg')">ADD TO CART</a>
+						</div>
+					</div></a>
+					<div class="part-sec none2">					 
+					   <img src="images/Kalung 3.jpeg" id="Kalung-manik-design-3">
+					   <div class="part-info">
+						<a><h5>Kalung manik design 3<span>RM 110</span></h5></a>
+						
+						<a class="qck" href="#" onclick="addToCart('Kalung manik design 3', '110.00', 'images/Kalung 3.jpeg')">ADD TO CART</a>
+						</div>
+					</div></a>
+					<div class="part-sec none1">					 
+					   <img src="images/Kalung 4.jpg" id="Kalung-manik-design-4">
+					   <div class="part-info">
+						<a><h5>Kalung manik design 4<span>RM 150</span></h5></a>
+						
+						<a class="qck" href="#" onclick="addToCart('Kalung manik design 4', '150.00', 'images/Kalung 4.jpg')">ADD TO CART</a>
+						</div>
+					</div></a>
+					<div class="clearfix"></div>
+				</div><br>
+				<div class="top">
+				   <ul>
+					   <li><a>Traditional hats</a></li>
+				   </ul>				 
+			   </div>
+				<div class="parts3">
+					<div class="part-sec">					 
+					   <img src="images/Topi 1.jpeg" id="Topi-dayak-design-1">
+						<div class="part-info">
+							<a><h5>Topi dayak design 1<span>RM 350</span></h5></a>
+							
+						<a class="qck" href="#" onclick="addToCart('Topi dayak design 1', '350.00', 'images/Topi 1.jpeg')">ADD TO CART</a>
+						</div>
+					</div></a>
+				<div class="part-sec">					 
+					   <img src="images/Topi 2.jpeg" id="Topi-lundayeh-design-1">
+						<div class="part-info">
+							<a><h5>Topi lundayeh design 1<span>RM 300</span></h5></a>
+							
+						<a class="qck" href="#" onclick="addToCart('Topi lundayeh design 1', '300.00', 'images/Topi 2.jpeg')">ADD TO CART</a>
+						</div>
+					</div></a>
+					<div class="part-sec none2">					 
+					   <img src="images/Topi 3.jpeg" id="Topi-lundayeh-design-2">
+					   <div class="part-info">
+						   <a><h5>Topi lundayeh design 2<span>RM 350</span></h5></a>
+						   
+						<a class="qck" href="#" onclick="addToCart('Topi lundayeh design 2', '350.00', 'images/Topi 3.jpeg')">ADD TO CART</a>
+						</div>
+					</div></a>
+					<div class="part-sec none1">					 
+					   <img src="images/Topi 4.jpg" id="Topi-dayak-design-2">
+					   <div class="part-info">
+						   <a><h5>Topi dayak design 2<span>RM 400</span></h5></a>
+						   
+						   <a class="qck" href="#" onclick="addToCart('Topi dayak design 2', '400.00', 'images/Topi 4.jpg')">ADD TO CART</a>
+						</div>
+					</div></a>
+					<div class="clearfix"></div>
+				</div>
+					<div class="clearfix"></div>
+				</div>
+				
+			</div>
+		</div>
+		
+	   
+		
+		<div class="clearfix"></div>
+		</div>
+	 </div>
+</div>
+
+
+
+<!---->
+<div class="footer">
+	 <div class="container wrap">
+		<div class="logo2">
+			 <a href="Admin_addNewitem.html"><img src="images/logo2.png" alt=""/></a>
+		</div>
+		<div class="ftr-menu">
+			 <ul>
+				 <li><img src="images/Insta.png"/></li>
+				 <li><img src="images/Tiktok.png"/></li>
+				 <li><img src="images/Whatsapp.png"/></li>
+				 <li><img src="images/Facebook.png"/></li>
+			 </ul>
+		</div>
+		<div class="clearfix"></div>
+	 </div>
+</div>
+<!---->
+
+</body>
+</html>
+

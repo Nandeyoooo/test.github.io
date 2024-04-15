@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>SamSen Heritage Haven</title>
+    <link href="css/bootstrap.css" rel="stylesheet" type="text/css" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link href="css/form.css" rel="stylesheet" type="text/css" media="all" />
+    <link href="css/style.css" rel="stylesheet" type="text/css" media="all" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <script type="application/x-javascript"> 
+        addEventListener("load", function() { 
+            setTimeout(hideURLbar, 0); 
+        }, false); 
+        function hideURLbar(){ 
+            window.scrollTo(0,1); 
+        } 
+    </script>
+    <link href='http://fonts.googleapis.com/css?family=Roboto:500,900,100,300,700,400' rel='stylesheet' type='text/css'>
+    <script src="js/jquery.easydropdown.js"></script>
+    <link href="css/nav.css" rel="stylesheet" type="text/css" media="all"/>
+    <script src="js/scripts.js" type="text/javascript"></script>
+</head>
+<body>
+    <div class="banner-bg banner-sec">  
+        <div class="container">
+            <div class="header">
+                <div class="logo">
+                    <a href="index.html"><img src="images/logo.png" alt=""/></a>
+                </div>                             
+            </div>
+            <div class="clearfix"></div>
+        </div>
+    </div>
+    <div class="cart">
+        <div class="container">
+            <div class="cart-top"></div>
+            <div class="col-md-9 cart-items">
+                <h2>My Shopping Bag</h2>
+                <!-- Cart items will be dynamically added here -->
+            </div>
+            <div class="col-md-3 cart-total">
+                <a class="continue" href="index.html">Back to shopping</a>
+                <div class="price-details">
+                    <h3>Price Details</h3>
+                    <span>Total</span>
+                    <span class="total">---</span> 
+                    <span>Discount</span>
+                    <span class="discount">---</span>
+                    <span>Delivery Charges</span>
+                    <span class="delivery-charge">RM 50.00</span> 
+                    <div class="clearfix"></div>                  
+                </div> 
+                <h4 class="last-price">TOTAL</h4>
+                <span class="total final">---</span>
+                <div class="clearfix"></div>
+                <a class="order" href="payment.html">Place Order</a>
+                <div class="total-item">
+                    <h4>COUPONS</h4>
+                    <a class="cpns" href="#">Apply Coupons</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="footer">
+        <div class="container wrap">
+            <div class="logo2">
+                <a><img src="images/logo2.png" alt=""/></a>
+            </div>
+            <div class="ftr-menu">
+                <ul>
+                    <li><img src="images/Insta.png"/></li>
+                    <li><img src="images/Tiktok.png"/></li>
+                    <li><img src="images/Whatsapp.png"/></li>
+                    <li><img src="images/Facebook.png"/></li>
+                </ul>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+    </div>
+
+    <script>
+        // Get cart data from URL parameters
+        var urlParams = new URLSearchParams(window.location.search);
+        var cartDataParam = urlParams.get('cartData');
+        var cartItems = cartDataParam ? JSON.parse(decodeURIComponent(cartDataParam)) : [];
+    
+        // Function to display cart items
+        function displayCartItems() {
+            var cartContainer = $('.cart-items');
+            cartContainer.empty(); // Clear existing content
+    
+            // Loop through cart items and append to cart container
+            $.each(cartItems, function(index, item) {
+                var cartItemHTML = `
+                    <div class="cart-header" data-index="${index}">
+                        <div class="close"> </div>
+                        <div class="cart-sec">
+                            <div class="cart-item cyc">
+                                <img src="${item.image}" alt="Product Image">
+                            </div>
+                            <div class="cart-item-info">
+                                <h2>${item.name}<span></span></h2>
+                                <h4><span class="price">RM ${item.price}</span></h4>
+                                <p class="qty">Quantity: </p>
+                                <input min="1" type="number" class="form-control input-small quantity" value="${item.quantity}"><br>
+                                <span>Minimum quantity is 1</span>
+                            </div>
+                            <div class="clearfix"></div>
+                            <div class="delivery">
+                                <span>Delivered in 3-5 business days</span>
+                                <div class="clearfix"></div>
+                            </div>                     
+                        </div>
+                    </div>
+                `;
+                cartContainer.append(cartItemHTML);
+            });
+        }
+    
+        // Function to calculate total price
+        function calculateTotalPrice() {
+            var totalPrice = 0;
+            $.each(cartItems, function(index, item) {
+                totalPrice += item.price * item.quantity;
+            });
+            var deliveryCharge = parseFloat($('.delivery-charge').text().replace('RM ', ''));
+            var finalTotal = totalPrice + deliveryCharge;
+            $('.total').text('RM ' + totalPrice.toFixed(2));
+            $('.final').text('RM ' + finalTotal.toFixed(2));
+        }
+    
+        // Function to update cart data in localStorage
+        function updateCartData() {
+            localStorage.setItem('cartData', JSON.stringify(cartItems));
+        }
+    
+        $(document).ready(function() {
+            // Display cart items on page load
+            displayCartItems();
+            // Calculate total price
+            calculateTotalPrice();
+    
+            // Update cart data and total price when quantity changes
+            $(document).on('change', '.quantity', function() {
+                var index = $(this).closest('.cart-header').data('index');
+                cartItems[index].quantity = $(this).val();
+                updateCartData();
+                calculateTotalPrice(); // Update total price when quantity changes
+            });
+    
+            // Remove item from cart
+            $(document).on('click', '.close', function() {
+                var index = $(this).closest('.cart-header').data('index');
+                cartItems.splice(index, 1);
+                updateCartData();
+                displayCartItems();
+                calculateTotalPrice();
+            });
+        });
+    </script>
+</body>
+</html>
